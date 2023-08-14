@@ -168,7 +168,7 @@ namespace NebuliBot.Modules
         private static async Task<string?> CreateMediaFile(string url)
         {
             return JsonConvert.DeserializeObject<ImgBbResponse>(await _httpClient.GetStringAsync(
-                    $"https://api.imgbb.com/1/upload?key=69de27f9d3463dfe9159a743ad3c05df&image={url}"))
+                    $"UH NUH"))
                 ?.Data.Url;
         }
 
