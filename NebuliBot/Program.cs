@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NebuliBot.Logger;
 using NebuliBot.Modules;
+using NebuliBot.Modules.Interactions;
 using NebuliBot.Services;
 
 namespace NebuliBot
@@ -88,6 +89,9 @@ namespace NebuliBot
             _client.InviteDeleted += ServerLogsModule.OnInviteDeleted;
             _client.UserBanned += ServerLogsModule.OnUserBanned;
             _client.UserUnbanned += ServerLogsModule.OnUserUnbanned;
+            
+            _client.ModalSubmitted += SubmissionModal.HandleModal;
+            _client.ButtonExecuted += SubmissionModal.HandleButton;
 
             _client.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
             commands.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
