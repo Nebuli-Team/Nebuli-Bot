@@ -35,7 +35,7 @@
 
     <ItemGroup>
       <None Update="config.yml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

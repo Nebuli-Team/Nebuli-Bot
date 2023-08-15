@@ -77,20 +77,24 @@ namespace NebuliBot
         
             var config = provider.GetRequiredService<IConfigurationRoot>();
             await provider.GetRequiredService<InteractionCommandService>().LoadCommands();
-        
-            _client.UserJoined += ServerLogsModule.OnUserJoin;
-            _client.UserLeft += ServerLogsModule.OnUserLeave;
-            _client.RoleUpdated += ServerLogsModule.OnRoleUpdate;
-            _client.ThreadCreated += ServerLogsModule.OnThreadCreated;
-            _client.ThreadDeleted += ServerLogsModule.OnThreadDeleted;
-            _client.MessageDeleted += ServerLogsModule.OnMessageDeleted;
-            _client.MessageUpdated += ServerLogsModule.OnMessageUpdated;
-            _client.InviteCreated += ServerLogsModule.OnInviteCreated;
-            _client.InviteDeleted += ServerLogsModule.OnInviteDeleted;
-            _client.UserBanned += ServerLogsModule.OnUserBanned;
-            _client.UserUnbanned += ServerLogsModule.OnUserUnbanned;
+
+            if (bool.Parse(config["use_events"]))
+            {
+                _client.UserJoined += ServerLogsModule.OnUserJoin;
+                _client.UserLeft += ServerLogsModule.OnUserLeave;
+                _client.RoleUpdated += ServerLogsModule.OnRoleUpdate;
+                _client.ThreadCreated += ServerLogsModule.OnThreadCreated;
+                _client.ThreadDeleted += ServerLogsModule.OnThreadDeleted;
+                _client.MessageDeleted += ServerLogsModule.OnMessageDeleted;
+                _client.MessageUpdated += ServerLogsModule.OnMessageUpdated;
+                _client.InviteCreated += ServerLogsModule.OnInviteCreated;
+                _client.InviteDeleted += ServerLogsModule.OnInviteDeleted;
+                _client.UserBanned += ServerLogsModule.OnUserBanned;
+                _client.UserUnbanned += ServerLogsModule.OnUserUnbanned;
+            }
             
             _client.ModalSubmitted += SubmissionModal.HandleModal;
+            _client.ModalSubmitted += BugReportModal.HandleModal;
             _client.ButtonExecuted += SubmissionModal.HandleButton;
 
             _client.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
@@ -99,7 +103,7 @@ namespace NebuliBot
             _client.Ready += async () =>
             {
                 await _client.SetStatusAsync(UserStatus.DoNotDisturb);
-                await _client.SetActivityAsync(new Game("Discord Utility Bot", ActivityType.Listening));
+                await _client.SetActivityAsync(new Game(config["bot_status"], ActivityType.Listening));
                 
                 Console.WriteLine($"Conected as => {_client.CurrentUser}");
             

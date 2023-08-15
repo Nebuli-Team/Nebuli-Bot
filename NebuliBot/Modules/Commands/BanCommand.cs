@@ -43,9 +43,9 @@ namespace NebuliBot.Modules.Commands
     {
         [SlashCommand("user", "Bans the specified user")]
         [RequireUserPermission(GuildPermission.BanMembers)]
-        public async Task BanUserAsync([Summary("User", "User to ban")] SocketUser user, [Summary("Reason", "The reason of the ban")] string reason)
+        public async Task BanUserAsync([Summary("User", "User to ban")] SocketUser user, [Summary("Reason", "The reason of the ban")] string reason, [Summary("Prune", "The Days to Prune")] int days)
         {
-            await ((IGuildUser)user).BanAsync(7, reason);
+            await ((IGuildUser)user).BanAsync(days, reason);
             await RespondAsync(embed: await EmbedModule.CreateBasicEmbed("User Banned", $"{user.Username} has been banned for: {reason}", Color.Orange));
         }
     }

@@ -168,7 +168,7 @@ namespace NebuliBot.Modules
         private static async Task<string?> CreateMediaFile(string url)
         {
             return JsonConvert.DeserializeObject<ImgBbResponse>(await _httpClient.GetStringAsync(
-                    $"UH NUH"))
+                    $"NO"))
                 ?.Data.Url;
         }
 
@@ -207,7 +207,7 @@ namespace NebuliBot.Modules
 
                 logEmbed.WithDescription(stringBuilder.ToString());
                 var button = new ComponentBuilder().WithButton("Go to the Message", style: ButtonStyle.Link, url: msg.GetJumpUrl());
-            
+
                 await Program.StaticAccess.Guild.GetTextChannel(1137219362340745319).SendMessageAsync(embed: logEmbed.Build(), components: button.Build());
             }
         }

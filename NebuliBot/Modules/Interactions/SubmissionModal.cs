@@ -106,6 +106,10 @@ namespace NebuliBot.Modules.Interactions
                     
                     await Program.StaticAccess.Guild.CreateRoleAsync(embed.Title);
                     
+                    var user = Program.StaticAccess.Guild.Users.FirstOrDefault(x => x.Username == embed.Author?.Name);
+                    if (user is not null)
+                        await user.AddRoleAsync(Program.StaticAccess.Guild.Roles.FirstOrDefault(x => x.Name == embed.Title)!);
+                    
                     await msg.DeleteAsync();
                     
                     await component.FollowupAsync(embed: await EmbedModule.CreateBasicEmbed("Plugin Submission Accepted", "The plugin submission has been accepted", Color.Green), ephemeral: true);
@@ -115,13 +119,6 @@ namespace NebuliBot.Modules.Interactions
         
         public static async Task HandleModal(SocketModal modal)
         {
-            string customId = modal.Data.CustomId;
-            if (customId.Contains('|'))
-            {
-                string toRemove = modal.Data.CustomId.Substring(modal.Data.CustomId.IndexOf('|'));
-                customId = modal.Data.CustomId.Replace(toRemove, string.Empty);
-            }
-
             if (modal.Data.CustomId == SendSubmissionModal.CustomId)
                 await HandlePluginSubmission(modal);
         }
