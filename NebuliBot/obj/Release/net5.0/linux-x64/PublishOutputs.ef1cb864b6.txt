@@ -1,0 +1,3 @@
+C:\Users\mbro8\source\Repos\Nebuli-Bot\NebuliBot\bin\Release\net5.0\publish\linux-x64\NebuliBot.pdb
+C:\Users\mbro8\source\Repos\Nebuli-Bot\NebuliBot\bin\Release\net5.0\publish\linux-x64\libe_sqlite3.so
+C:\Users\mbro8\source\Repos\Nebuli-Bot\NebuliBot\bin\Release\net5.0\publish\linux-x64\NebuliBot

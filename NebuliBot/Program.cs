@@ -20,20 +20,23 @@ namespace NebuliBot
     public class Program
     {
         private DiscordSocketClient _client;
-    
+        private ServerListService _serverListService;
+
         public static Task Main() => new Program().MainAsync();
-    
+
         private SocketGuild? guild;
 
         public SocketGuild Guild => guild ??= _client.Guilds.FirstOrDefault(g => g.Id == 1131406603791372332)!;
 
         public static Program StaticAccess;
 
+        public int LatestServerCount = 0;
+
         public Program()
         {
             StaticAccess = this;
         }
-        
+
         public async Task MainAsync()
         {
             var config = new ConfigurationBuilder()
@@ -62,58 +65,59 @@ namespace NebuliBot
                             DefaultRunMode = Discord.Commands.RunMode.Async
                         })))
                 .Build();
+
+            _serverListService = new ServerListService();
             await RunAsync(host);
         }
-        
+
         public async Task RunAsync(IHost host)
         {
             Console.WriteLine($"Starting NebuliBot. Version: {Assembly.GetExecutingAssembly().GetName().Version}");
-        
+
             using IServiceScope serviceScope = host.Services.CreateScope();
-            IServiceProvider provider = serviceScope.ServiceProvider;
-        
-            var commands = provider.GetRequiredService<InteractionService>();
-            _client = provider.GetRequiredService<DiscordSocketClient>();
-        
-            var config = provider.GetRequiredService<IConfigurationRoot>();
-            await provider.GetRequiredService<InteractionCommandService>().LoadCommands();
+            var commands = serviceScope.ServiceProvider.GetRequiredService<InteractionService>();
+            _client = serviceScope.ServiceProvider.GetRequiredService<DiscordSocketClient>();
 
-            if (bool.Parse(config["use_events"]))
-            {
-                _client.UserJoined += ServerLogsModule.OnUserJoin;
-                _client.UserLeft += ServerLogsModule.OnUserLeave;
-                _client.RoleUpdated += ServerLogsModule.OnRoleUpdate;
-                _client.ThreadCreated += ServerLogsModule.OnThreadCreated;
-                _client.ThreadDeleted += ServerLogsModule.OnThreadDeleted;
-                _client.MessageDeleted += ServerLogsModule.OnMessageDeleted;
-                _client.MessageUpdated += ServerLogsModule.OnMessageUpdated;
-                _client.InviteCreated += ServerLogsModule.OnInviteCreated;
-                _client.InviteDeleted += ServerLogsModule.OnInviteDeleted;
-                _client.UserBanned += ServerLogsModule.OnUserBanned;
-                _client.UserUnbanned += ServerLogsModule.OnUserUnbanned;
-            }
-            
-            _client.ModalSubmitted += SubmissionModal.HandleModal;
-            _client.ModalSubmitted += BugReportModal.HandleModal;
-            _client.ButtonExecuted += SubmissionModal.HandleButton;
+            var config = serviceScope.ServiceProvider.GetRequiredService<IConfigurationRoot>();
+            await serviceScope.ServiceProvider.GetRequiredService<InteractionCommandService>().LoadCommands();
 
-            _client.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
-            commands.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
+            _client.Log += _ => serviceScope.ServiceProvider.GetRequiredService<ConsoleLogger>().Log(_);
+            commands.Log += _ => serviceScope.ServiceProvider.GetRequiredService<ConsoleLogger>().Log(_);
 
             _client.Ready += async () =>
             {
-                await _client.SetStatusAsync(UserStatus.DoNotDisturb);
-                await _client.SetActivityAsync(new Game(config["bot_status"], ActivityType.Listening));
-                
-                Console.WriteLine($"Conected as => {_client.CurrentUser}");
-            
-                await commands.RegisterCommandsToGuildAsync(UInt64.Parse(config["guild"]), true);
+                await _client.SetStatusAsync(UserStatus.Online);
+                Console.WriteLine($"Connected as => {_client.CurrentUser}");
+
+                await commands.RegisterCommandsToGuildAsync(ulong.Parse(config["guild"]), true);
+
+                var statusUpdateInterval = TimeSpan.FromMinutes(20);
+                var statusUpdateTimer = new System.Threading.Timer(
+                    async (_) => await UpdateBotStatus(),
+                    null,
+                    TimeSpan.Zero,
+                    statusUpdateInterval);
             };
-        
+
             await _client.LoginAsync(TokenType.Bot, config["token"]);
             await _client.StartAsync();
-            
+
             await Task.Delay(-1);
+        }
+
+        public async Task UpdateBotStatus()
+        {
+            int serverCount = await _serverListService.GetTotalCountAsync("Nebuli");
+            LatestServerCount = serverCount;
+            Console.WriteLine("New server count : " + serverCount);
+            if (serverCount >= 0)
+            {
+                await _client.SetActivityAsync(new Game($"on {serverCount} servers.", ActivityType.Playing));
+            }
+            else
+            {
+                await _client.SetActivityAsync(new Game($"on 0 servers.", ActivityType.Playing));
+            }
         }
     }
 }
