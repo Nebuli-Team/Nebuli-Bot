@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj": {}
+    "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj": {
+    "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
+        "projectUniqueName": "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
         "projectName": "NebuliBot",
-        "projectPath": "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
+        "projectPath": "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
         "packagesPath": "C:\\Users\\mbro8\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\obj\\",
+        "outputPath": "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -103,6 +103,10 @@
             "Microsoft.Extensions.Primitives": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "System.Threading.Timer": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

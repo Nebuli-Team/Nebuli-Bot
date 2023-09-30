@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8h0Y7SGRGzBDN43wlyh9eFkCLd3RmcD9zoeA+cLbdG7mtv8Mn1L8GmtPKODp3pX9tG+Ej8mZvR+gAQ2i158RjA==",
+  "dgSpecHash": "iVwcYYVL02akEs5hQAxeaToFMaWPPF8PT7hWVtnk0Jodt7mGBUg3iV0HosTPfAhZMlIX7ss8YXnEcB0uo5Pt1Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mbro8\\source\\Repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
+  "projectFilePath": "C:\\Users\\mbro8\\source\\repos\\Nebuli-Bot\\NebuliBot\\NebuliBot.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mbro8\\.nuget\\packages\\discord.net.commands\\3.12.0\\discord.net.commands.3.12.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\discord.net.core\\3.12.0\\discord.net.core.3.12.0.nupkg.sha512",
@@ -41,6 +41,7 @@
     "C:\\Users\\mbro8\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\5.0.0\\microsoft.extensions.options.configurationextensions.5.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\mbro8\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.6\\sqlitepclraw.bundle_e_sqlite3.2.0.6.nupkg.sha512",
@@ -54,9 +55,11 @@
     "C:\\Users\\mbro8\\.nuget\\packages\\system.linq.async\\5.0.0\\system.linq.async.5.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg.sha512",
+    "C:\\Users\\mbro8\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\mbro8\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
     "C:\\Users\\mbro8\\.nuget\\packages\\yamldotnet\\4.2.1\\yamldotnet.4.2.1.nupkg.sha512"
   ],

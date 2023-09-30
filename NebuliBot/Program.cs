@@ -75,10 +75,36 @@ namespace NebuliBot
             Console.WriteLine($"Starting NebuliBot. Version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
             using IServiceScope serviceScope = host.Services.CreateScope();
-            var commands = serviceScope.ServiceProvider.GetRequiredService<InteractionService>();
+
+            IServiceProvider provider = serviceScope.ServiceProvider;
+
+            var commands = provider.GetRequiredService<InteractionService>();
+            _client = provider.GetRequiredService<DiscordSocketClient>();
+
+            var config = provider.GetRequiredService<IConfigurationRoot>();
+
+            if (bool.Parse(config["use_events"]))
+            {
+                _client.UserJoined += ServerLogsModule.OnUserJoin;
+                _client.UserLeft += ServerLogsModule.OnUserLeave;
+                _client.RoleUpdated += ServerLogsModule.OnRoleUpdate;
+                _client.ThreadCreated += ServerLogsModule.OnThreadCreated;
+                _client.ThreadDeleted += ServerLogsModule.OnThreadDeleted;
+                _client.MessageDeleted += ServerLogsModule.OnMessageDeleted;
+                _client.MessageUpdated += ServerLogsModule.OnMessageUpdated;
+                _client.InviteCreated += ServerLogsModule.OnInviteCreated;
+                _client.InviteDeleted += ServerLogsModule.OnInviteDeleted;
+                _client.UserBanned += ServerLogsModule.OnUserBanned;
+                _client.UserUnbanned += ServerLogsModule.OnUserUnbanned;
+            }
+
+            _client.ModalSubmitted += SubmissionModal.HandleModal;
+            _client.ModalSubmitted += BugReportModal.HandleModal;
+            _client.ButtonExecuted += SubmissionModal.HandleButton;
             _client = serviceScope.ServiceProvider.GetRequiredService<DiscordSocketClient>();
 
-            var config = serviceScope.ServiceProvider.GetRequiredService<IConfigurationRoot>();
+            _client.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
+            commands.Log += _ => provider.GetRequiredService<ConsoleLogger>().Log(_);
             await serviceScope.ServiceProvider.GetRequiredService<InteractionCommandService>().LoadCommands();
 
             _client.Log += _ => serviceScope.ServiceProvider.GetRequiredService<ConsoleLogger>().Log(_);
@@ -88,16 +114,23 @@ namespace NebuliBot
             {
                 await _client.SetStatusAsync(UserStatus.Online);
                 Console.WriteLine($"Connected as => {_client.CurrentUser}");
-
                 await commands.RegisterCommandsToGuildAsync(ulong.Parse(config["guild"]), true);
 
-                var statusUpdateInterval = TimeSpan.FromMinutes(20);
-                var statusUpdateTimer = new System.Threading.Timer(
-                    async (_) => await UpdateBotStatus(),
-                    null,
-                    TimeSpan.Zero,
-                    statusUpdateInterval);
+                var statusUpdateTimer = new System.Timers.Timer(TimeSpan.FromMinutes(30).TotalMilliseconds);
+                statusUpdateTimer.Elapsed += async (_, __) =>
+                {
+                    try
+                    {
+                        await UpdateBotStatus();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error updating bot status: {ex}");
+                    }
+                };
+                statusUpdateTimer.Start();
             };
+
 
             await _client.LoginAsync(TokenType.Bot, config["token"]);
             await _client.StartAsync();
@@ -109,7 +142,6 @@ namespace NebuliBot
         {
             int serverCount = await _serverListService.GetTotalCountAsync("Nebuli");
             LatestServerCount = serverCount;
-            Console.WriteLine("New server count : " + serverCount);
             if (serverCount >= 0)
             {
                 await _client.SetActivityAsync(new Game($"on {serverCount} servers.", ActivityType.Playing));
